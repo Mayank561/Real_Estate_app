@@ -3,12 +3,8 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
 const app = express();
-<<<<<<< HEAD
 const userRouter = require("./routes/user.route");
 const authRoute = require("./routes/auth.route");
-=======
-
->>>>>>> 99d6c343f3f8357fd5d93e6e9431463143a9d330
 
 mongoose
 .connect(process.env.MONGO)
@@ -19,7 +15,6 @@ mongoose
     console.log(err);
 });
 
-<<<<<<< HEAD
 app.use(express.json());
 
 app.listen(3000,()=>{
@@ -29,8 +24,14 @@ app.listen(3000,()=>{
 // define routes
 app.use("/api/user", userRouter);
 app.use("/api/auth",authRoute);
-=======
-app.listen(3000,()=>{
-    console.log("server Listening on port 3000");
+
+// middleware
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || 'Internal Server Error';
+    return res.status(statusCode).json({
+        success: false,
+        statusCode,
+        message,
+    });
 });
->>>>>>> 99d6c343f3f8357fd5d93e6e9431463143a9d330
